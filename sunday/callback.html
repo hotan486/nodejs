@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Callback</title>
+    <style>
+        div#box{
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+            background: yellow;
+            position: absolute;
+        }
+    </style>
+    <script>
+        
+        var move = function(dest, callback){
+            var box = document.querySelector('#box');
+            box.callback = callback;
+            var x =0;
+            var fn = setInterval(function(){
+                x+=10;
+                if(x >= dest){
+                    clearInterval(fn);
+                    box.callback();
+                }
+                
+                box.style.left = x+ 'px';
+            },30);
+            
+            //box.style.left = '200px';
+        }
+        
+        window.onload = function(){
+            move(500, function(){
+                this.style.background = 'blue';
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="box"></div>
+</body>
+</html>
