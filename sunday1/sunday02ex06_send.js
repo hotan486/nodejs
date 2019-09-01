@@ -8,11 +8,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.use('/', router);
 
-router.route('/').get(function(req, res){
-    console.log('/ 요청 됨');
-    //res.writeHead(200, {'Content-Type':'text/html;charset=utf8;'});
-    res.send({name:"sdf", age:20});
-});
+router.route('/').get(function(req.res));
 
 
 
