@@ -6,10 +6,16 @@
 </head>
 
 <body>
-    <h1>길동의 프로필입니다. </h1>
-    <h2>경력:  </h2>
-    <h2>학력:  </h2>
-
+    <%
+       // ejs 스크립트 렛 : 자바스크립트 문법 사용 가능.
+        console.dir(data);
+    %>   
+    <h1><%=data.name %>의 프로필입니다. </h1>
+    <h2>성명: <%=data.name %> </h2>
+    <h2>경력: <%=data.yearWork %> </h2>
+    <h2>학력: <%=data.yearSchool %> </h2>
+    <h2>자격: <%=data.yearJobSkill %> </h2>
+    <p><a href="/">뒤로 가기</p>
 </body>
 
 </html>

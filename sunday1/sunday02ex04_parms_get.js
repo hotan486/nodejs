@@ -5,6 +5,12 @@ const router = express.Router();
 const app = express();
 const path = require('path');
 
+// serve-static 모듈
+// > npm i serve-static --save
+const static = require('serve-static');
+
+app.use('/public', static(__dirname + '/public'))
+
 // ejs 모듈 설치
 // > npm install ejs --save
 // ejs 뷰엔진 등록
@@ -17,7 +23,8 @@ app.set('port',3000);
 router.route('/').get(function(req, res){
     res.writeHead(200, {'Content-Type':'text/html;charset=utf8;'});
     res.write('<h1>길동의 홈페이지</h1>');
-    res.write('<p><a href="/profile">프로필로 이동</p>');
+    res.write('<p><a href="/public/public_from.html">프로필 입력으로 이동</p>');
+    //res.write('<p><a href="/profile">프로필로 이동</p>');
     res.write('<p><a href="/home">홈으로 이동</p>');
     //res.end('/ 요청 들어옴');
 });
@@ -37,13 +44,23 @@ router.route('/home').get(function(req, res){
 
 router.route('/profile').get(function(req, res){
     res.writeHead(200, {'Content-Type':'text/html;charset=utf8;'});
+    
+    var name = req.query.name;
+    var yearWork = req.query.yearWork;
+    var yearSchool = req.query.yearSchool;
+    var yearJobSkill = req.query.yearJobSkill;
+    
+    console.log(name, yearWork, yearSchool, yearJobSkill);
+    
+    
     //res.end('/home 요청 들어옴');
     let data = {
-        'name': "홍길순",
-        'yearWork':"si 업체 10년",
-        'yearSchool':"서울대 컴퓨터공학과",
-        'yearJobSkill':"정보처리기사"
+        'name': name,
+        'yearWork':yearWork,
+        'yearSchool':yearSchool,
+        'yearJobSkill':yearJobSkill
     }
+    
     req.app.render('profile', {'data':data}, function(err,html){
         if(err) throw err;
         res.end(html);
