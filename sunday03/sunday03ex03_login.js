@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
 // port 속성 저장
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 // view engine 설정
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -70,34 +70,44 @@ var authUser = function (database, loginData, callback) {
             callback(null, null);
         }
     });
+} // end of authUser 
+
+function carList(database, callback) {
+    car = database.collection('car');
+    
+    car.find({}).toArray(function(err, list) {
+        if(err) {
+            console.log('car find error!');
+            callback(err, null);
+            return;
+        }
+        if(list != null && list.length > 0) {
+            callback(null, list);
+        } else {
+            callback(null, null);
+        }
+    });
 }
 
-
-//로그인 후 상품 처리 
 router.route('/process/product').get(function(req, res) {
     console.log('/process/product 요청 됨!');
     
-    var loginData = {
-        id: res.body.id,
-        password: res.body.password
-    };
-
-    console.log(loginData);
-    
     if(req.session.user) {
-        //데이터를 받아서 처리 하기
-        req.app.render('product', loginData, function(err, html){
-            if(err) throw err;
-            res.end(html);
-        });
+        if(db) {
+            carList(db, function(err, list) {
+                //console.log(list);
+                req.app.render('product', {carList : list}, function(err, html){
+                    if(err) throw err;
+                    res.end(html);
+                });
+            });
+        }
     } else {
         console.log('로그인 안됨!');
         res.redirect('/public/login.html');
     }
 });
 
-
-//로그인 처리 
 router.route('/process/login').post(function (req, res) {
     console.log('/process/login 요청 됨.');
     var loginData = {
@@ -119,7 +129,6 @@ router.route('/process/login').post(function (req, res) {
                     loginData: docs[0].id,
                     name : docs[0].name,
                     authorized: true
-                    
                 }
                 // 상품 정보 페이지로 이동
                 res.redirect('/process/product');

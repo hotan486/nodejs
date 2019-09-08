@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>/view/product.ejs</title>
+</head>
+<body>
+     <h2>상품 상세보기 페이지</h2>
+     <%
+    consol.log(carList);    
+    consol.log(carList);
+    %>
+    
+    <table>
+        <tr>
+            <th>ObjectId</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Company</th>
+            <th>Year</th>
+        </tr>
+        <% for(var i = 0; i < carList.length; i++ ) { 
+            var car = carList[i];
+            console.dir(car);
+        %>
+        <tr>
+            <td><%=car._id%></td>
+            <td><%=car.name%></td>
+            <td><%=car.Price%></td>
+            <td><%=car.company%></td>
+            <td><%=car.year%></td>
+        </tr>
+        <% } %>
+    </table>
+    
+    <a href="/process/product/<%=car.name%>/delete">삭제</a>
+    <a href="/process/product/<%=car.name%>/modify">수정</a>
+    
+    
+    
+    
+     <form action="/process/logout" method="get">
+        <input type="submit" value="로그아웃"/>
+    </form>
+</body>
+</html>
